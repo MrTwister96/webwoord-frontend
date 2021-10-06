@@ -1,13 +1,72 @@
 import React from "react";
+import { MdVolumeUp, MdLiveTv } from "react-icons/md";
 
 import "./HomePage.css";
 
 const HomePage = () => {
+    const streams = [
+        {
+            streamer: "EG Kerk Maranata",
+            speaker: "Ds Willie Olivier",
+            description: "Die Nagmal - 1 Kor 11:27",
+            listeners: 39,
+        },
+        {
+            streamer: "EG Kerk Pretoria Oos",
+            speaker: "Ds Andre Bester",
+            description: "Verbly jouself - Fil 4:4",
+            listeners: 27,
+        },
+        {
+            streamer: "EG Kerk Benoni",
+            speaker: "Ds Gerhard Beukes",
+            description: "Die Wonderlike Skepping - Gen 1",
+            listeners: 32,
+        },
+        {
+            streamer: "EG Kerk Kempton Park",
+            speaker: "Ds Paul Grobbelaar",
+            description: "Loof die Here - Ps 102",
+            listeners: 18,
+        },
+        {
+            streamer: "EG Kerk Wonderboom",
+            speaker: "Ds Jurgens Prinsloo",
+            description: "Die Here is my Herder - Ps 23",
+            listeners: 22,
+        },
+    ];
+
     return (
-        <div className="flex flex-1 items-center justify-around sm:p-5 md:p-10 lg:p-20 min-h-screen bg-gray-900 bg-opacity-95">
-            <h1 className="flex bg-opacity-50 bg-gray-900 p-2 sm:p-5 md:p-10 lg:p-20 rounded-lg text-white border-white border border-opacity-50">
-                <h1>all streams will go here</h1>
-            </h1>
+        <div className="flex flex-1 flex-col items-center space-y-3 py-20  min-h-screen bg-gray-900">
+            {streams.map((stream, index) => {
+                const { streamer, speaker, description, listeners } = stream;
+                return (
+                    <button className="flex items-center w-11/12 md:w-3/5 lg:w-2/5 py-2 bg-gray-800 bg-opacity-80 justify-between rounded-lg hover:bg-gray-700 hover:bg-opacity-60 outline-none focus:ring-4 focus:ring-secondary">
+                        <div className="flex flex-auto flex-col ml-5 truncate">
+                            <p className="flex mb-1 text-white font-bold">
+                                {streamer}
+                            </p>
+                            <p className="flex ml-5 text-white text-opacity-60 font-bold">
+                                {speaker}
+                            </p>
+                            <p className="flex ml-5 text-white text-opacity-60 font-bold">
+                                {description}
+                            </p>
+                        </div>
+                        <div className="flex flex-auto h-full mr-5 justify-end items-center space-x-3">
+                            <MdVolumeUp color="white" size="25" />
+                            <MdLiveTv color="white" size="25" />
+                            <div className="flex space-x-1 ">
+                                <div className="h-5 w-5 mt-1 bg-red-600 rounded-xl animate-pulse"></div>
+                                <p className="text-white font-bold">
+                                    {listeners}
+                                </p>
+                            </div>
+                        </div>
+                    </button>
+                );
+            })}
         </div>
     );
 };
