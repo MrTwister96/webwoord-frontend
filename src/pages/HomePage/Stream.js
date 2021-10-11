@@ -1,9 +1,28 @@
 import React from "react";
 import { MdVolumeUp, MdLiveTv } from "react-icons/md";
+import { useHistory } from "react-router-dom";
+import { getToken } from "../../utils/api";
+import * as pokemon from "pokemon";
 
 const Stream = ({ streamer, speaker, description, listeners }) => {
+    let history = useHistory();
+
+    const handleJoinStream = async () => {
+        const streamData = {
+            roomName: streamer,
+            identity: pokemon.random("en"),
+            host: false,
+        };
+        const response = await getToken(streamData);
+
+        history.push(`/room?token=${response.token}&host=false`);
+    };
+
     return (
-        <button className="flex items-center w-11/12 md:w-3/5 lg:w-2/5 py-2 bg-gray-800 bg-opacity-80 justify-between rounded-lg hover:bg-gray-700 hover:bg-opacity-60 outline-none focus:ring-4 focus:ring-secondary">
+        <button
+            onClick={handleJoinStream}
+            className="flex items-center w-11/12 md:w-3/5 lg:w-2/5 py-2 bg-gray-800 bg-opacity-80 justify-between rounded-lg hover:bg-gray-700 hover:bg-opacity-60 outline-none focus:ring-4 focus:ring-secondary"
+        >
             <div className="flex flex-auto flex-col ml-5 truncate">
                 <p className="flex mb-1 text-white font-bold">{streamer}</p>
                 <p className="flex ml-5 text-white text-opacity-60 font-bold">

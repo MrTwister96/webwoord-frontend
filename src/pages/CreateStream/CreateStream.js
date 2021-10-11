@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { useHistory } from "react-router-dom";
 import { getToken } from "../../utils/api";
 import Input from "./Input";
+import { BiCheck, BiChevronDown } from "react-icons/bi";
+import { Listbox, Transition } from "@headlessui/react";
 
+const classNames = (...classes) => {
+    return classes.filter(Boolean).join(" ");
+};
+
+// let audioInputs = [];
 const CreateStream = () => {
     let history = useHistory();
     const [streamName, setStreamName] = useState("");
     const [hostName, setHostName] = useState("");
     const [scripture, setScripture] = useState("");
     const [theme, setTheme] = useState("");
+    const [audioInputs, setAudioInputs] = useState([
+        {
+            deviceId: "default",
+            label: "NONE",
+        },
+    ]);
+    const [selected, setSelected] = useState(audioInputs[0]);
 
     const handleStreamNameValueChange = (event) => {
         setStreamName(event.target.value);
@@ -26,7 +40,8 @@ const CreateStream = () => {
         setTheme(event.target.value);
     };
 
-    const handleCreateStream = async () => {
+    const handleCreateStream = async (event) => {
+        event.preventDefault();
         const streamData = {
             roomName: streamName,
             identity: hostName,
@@ -34,8 +49,29 @@ const CreateStream = () => {
         };
         const response = await getToken(streamData);
 
-        history.push(`/room?token=${response.token}`);
+        history.push(
+            `/room?token=${response.token}&host=true&deviceId=${selected.deviceId}`
+        );
     };
+
+    useEffect(() => {
+        navigator.mediaDevices.enumerateDevices().then((devices) => {
+            let devs = [];
+            devices.forEach((device) => {
+                if (
+                    device.kind === "audioinput" &&
+                    device.deviceId !== "default"
+                ) {
+                    const dev = {
+                        deviceId: device.deviceId,
+                        label: device.label,
+                    };
+                    devs = [...devs, dev];
+                }
+            });
+            setAudioInputs(devs);
+        });
+    }, []);
 
     return (
         <div className="flex bg-gray-900 min-h-screen min-w-screen justify-center items-center">
@@ -62,7 +98,81 @@ const CreateStream = () => {
                         onChange={handleScriptureValueChange}
                     />
 
-                    <div className="flex items-center justify-between">
+                    <Listbox value={selected} onChange={setSelected}>
+                        <Listbox.Label className="block text-sm font-bold text-white">
+                            Audio Input
+                        </Listbox.Label>
+                        <div className="mt-1 relative">
+                            <Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <span className="text-black block truncate">
+                                    {selected.label}
+                                </span>
+                                <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                    <BiChevronDown
+                                        className="h-5 w-5 text-gray-400"
+                                        aria-hidden="true"
+                                    />
+                                </span>
+                            </Listbox.Button>
+
+                            <Transition
+                                as={Fragment}
+                                leave="transition ease-in duration-100"
+                                leaveFrom="opacity-100"
+                                leaveTo="opacity-0"
+                            >
+                                <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                                    {audioInputs.map((input) => (
+                                        <Listbox.Option
+                                            key={input.deviceId}
+                                            className={({ active }) =>
+                                                classNames(
+                                                    active
+                                                        ? "text-white bg-indigo-600"
+                                                        : "text-gray-900",
+                                                    "cursor-default select-none relative py-2 pl-3 pr-9"
+                                                )
+                                            }
+                                            value={input}
+                                        >
+                                            {({ selected, active }) => (
+                                                <>
+                                                    <span
+                                                        className={classNames(
+                                                            selected
+                                                                ? "font-semibold"
+                                                                : "font-normal",
+                                                            "ml-3 block truncate"
+                                                        )}
+                                                    >
+                                                        {input.label}
+                                                    </span>
+
+                                                    {selected ? (
+                                                        <span
+                                                            className={classNames(
+                                                                active
+                                                                    ? "text-white"
+                                                                    : "text-indigo-600",
+                                                                "absolute inset-y-0 right-0 flex items-center pr-4"
+                                                            )}
+                                                        >
+                                                            <BiCheck
+                                                                className="h-5 w-5"
+                                                                aria-hidden="true"
+                                                            />
+                                                        </span>
+                                                    ) : null}
+                                                </>
+                                            )}
+                                        </Listbox.Option>
+                                    ))}
+                                </Listbox.Options>
+                            </Transition>
+                        </div>
+                    </Listbox>
+
+                    <div className="flex items-center justify-between mt-4">
                         <button
                             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                             type="button"
@@ -72,7 +182,11 @@ const CreateStream = () => {
                         </button>
                         <button
                             className="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-800"
-                            onClick={() => history.push("/")}
+                            onClick={(event) => {
+                                event.preventDefault();
+                                history.push("/");
+                            }}
+                            // onClick={() => history.push("/")}
                         >
                             Cancel
                         </button>
