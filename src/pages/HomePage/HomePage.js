@@ -1,11 +1,12 @@
 import React from "react";
+// Components
 import Steams from "./Steams";
-
-import "./HomePage.css";
+import NavBar from "./NavBar";
 
 const HomePage = () => {
     return (
-        <div className="flex flex-1 flex-col items-center space-y-3 py-20  min-h-screen bg-gray-900">
+        <div className="flex flex-col bg-gray-900">
+            <NavBar />
             <Steams />
         </div>
     );

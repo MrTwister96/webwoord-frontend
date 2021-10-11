@@ -5,6 +5,7 @@ import { connectToSocketIoServer } from "./utils/socketio";
 // Pages
 import HomePage from "./pages/HomePage/HomePage";
 import RoomPage from "./pages/RoomPage/RoomPage";
+import CreateStream from "./pages/CreateStream/CreateStream";
 // Styles
 import "./App.css";
 
@@ -18,6 +19,9 @@ const App = () => {
             <Switch>
                 <Route path="/room">
                     <RoomPage />
+                </Route>
+                <Route path="/create-stream">
+                    <CreateStream />
                 </Route>
                 <Route path="/">
                     <HomePage />

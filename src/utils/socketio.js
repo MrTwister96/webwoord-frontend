@@ -2,7 +2,7 @@ import io from "socket.io-client";
 import store from "../store/store";
 import { setStreams } from "../store/actions";
 
-const SERVER = "http://localhost:5000";
+const SERVER = "http://localhost:5001";
 
 let socket = null;
 
