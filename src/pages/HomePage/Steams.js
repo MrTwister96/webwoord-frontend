@@ -11,6 +11,7 @@ const Steams = ({ streams }) => {
 
                 return (
                     <Stream
+                        key={`${index}`}
                         streamer={streamer}
                         speaker={speaker}
                         description={description}
