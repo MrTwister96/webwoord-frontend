@@ -4,54 +4,78 @@ import { getToken } from "../../utils/api";
 import Input from "./Input";
 import { BiCheck, BiChevronDown } from "react-icons/bi";
 import { Listbox, Transition } from "@headlessui/react";
+import { setNewStream } from "../../store/actions";
+import { connect } from "react-redux";
 
 const classNames = (...classes) => {
     return classes.filter(Boolean).join(" ");
 };
 
 // let audioInputs = [];
-const CreateStream = () => {
+const CreateStream = ({ newStream, setNewStream }) => {
     let history = useHistory();
-    const [streamName, setStreamName] = useState("");
-    const [hostName, setHostName] = useState("");
-    const [scripture, setScripture] = useState("");
-    const [theme, setTheme] = useState("");
+
+    const [kerkNaam, setKerkNaam] = useState("");
+    const [prediker, setPrediker] = useState("");
+    const [beskrywing, setBeskrywing] = useState("");
+
     const [audioInputs, setAudioInputs] = useState([
         {
-            deviceId: "default",
+            deviceId: "NONE",
             label: "NONE",
         },
     ]);
     const [selected, setSelected] = useState(audioInputs[0]);
 
-    const handleStreamNameValueChange = (event) => {
-        setStreamName(event.target.value);
+    const handleKerkNaamChange = async (event) => {
+        await setKerkNaam(event.target.value);
     };
 
-    const handleHostNameValueChange = (event) => {
-        setHostName(event.target.value);
+    const handlePredikerChange = (event) => {
+        setPrediker(event.target.value);
     };
 
-    const handleScriptureValueChange = (event) => {
-        setScripture(event.target.value);
+    const handleBeskrywingChange = (event) => {
+        setBeskrywing(event.target.value);
     };
 
-    const handleThemeValueChange = (event) => {
-        setTheme(event.target.value);
+    const validateInputs = () => {
+        if (
+            kerkNaam !== "" &&
+            prediker !== "" &&
+            beskrywing !== "" &&
+            selected.deviceId !== "NONE"
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
     const handleCreateStream = async (event) => {
         event.preventDefault();
-        const streamData = {
-            roomName: streamName,
-            identity: hostName,
-            host: true,
-        };
-        const response = await getToken(streamData);
+        if (validateInputs()) {
+            const stream = {
+                kerkNaam,
+                prediker,
+                beskrywing,
+                deviceId: selected.deviceId,
+                roomName: `${kerkNaam}#${prediker}#${beskrywing}`,
+            };
 
-        history.push(
-            `/room?token=${response.token}&host=true&deviceId=${selected.deviceId}`
-        );
+            setNewStream(stream);
+
+            const streamData = {
+                roomName: `${kerkNaam}#${prediker}#${beskrywing}`,
+                identity: prediker,
+                host: true,
+            };
+            const response = await getToken(streamData);
+
+            history.push(`/room?token=${response.token}&host=true`);
+        } else {
+            alert("Please complete all the fields");
+        }
     };
 
     useEffect(() => {
@@ -78,24 +102,19 @@ const CreateStream = () => {
             <div className="w-full max-w-md">
                 <form className="text-white rounded-lg px-8 pt-6 pb-8 mb-4 bg-gray-800 bg-opacity-80">
                     <Input
-                        label="Stream Name"
-                        placeholder="Stream Name"
-                        onChange={handleStreamNameValueChange}
+                        label="Kerk Naam"
+                        placeholder="Kerk Naam"
+                        onChange={handleKerkNaamChange}
                     />
                     <Input
-                        label="Host Name"
-                        placeholder="Host Name"
-                        onChange={handleHostNameValueChange}
+                        label="Prediker"
+                        placeholder="Prediker"
+                        onChange={handlePredikerChange}
                     />
                     <Input
-                        label="Theme"
-                        placeholder="Theme"
-                        onChange={handleThemeValueChange}
-                    />
-                    <Input
-                        label="Scripture"
-                        placeholder="Scripture"
-                        onChange={handleScriptureValueChange}
+                        label="Beskrywing"
+                        placeholder="Beskrywing"
+                        onChange={handleBeskrywingChange}
                     />
 
                     <Listbox value={selected} onChange={setSelected}>
@@ -197,4 +216,16 @@ const CreateStream = () => {
     );
 };
 
-export default CreateStream;
+const mapStoreStateToProps = (state) => {
+    return {
+        ...state,
+    };
+};
+
+const mapActionsToProps = (dispatch) => {
+    return {
+        setNewStream: (newStream) => dispatch(setNewStream(newStream)),
+    };
+};
+
+export default connect(mapStoreStateToProps, mapActionsToProps)(CreateStream);

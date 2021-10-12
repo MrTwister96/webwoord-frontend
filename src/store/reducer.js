@@ -3,6 +3,12 @@ import actions from "./actions";
 const initialState = {
     identity: "",
     streams: [],
+    newStream: {
+        kerkNaam: "",
+        prediker: "",
+        beskrywing: "",
+        deviceId: "",
+    },
 };
 
 const reducer = (state = initialState, action) => {
@@ -16,6 +22,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 streams: action.streams,
+            };
+        case actions.SET_NEW_STREAM:
+            return {
+                ...state,
+                newStream: action.newStream,
             };
         default:
             return state;
