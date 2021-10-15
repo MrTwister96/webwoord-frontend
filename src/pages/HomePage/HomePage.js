@@ -14,6 +14,7 @@ const HomePage = ({ leaveRoom, setLeaveRoom }) => {
             setLeaveRoom(false);
             history.go(0);
         }
+        // eslint-disable-next-line
     }, []);
     return (
         <div className="flex flex-col bg-gray-900">

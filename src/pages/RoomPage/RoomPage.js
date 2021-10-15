@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { LiveKitRoom } from "livekit-react";
 import "livekit-react/dist/index.css";
 import "react-aspect-ratio/aspect-ratio.css";
-import { CreateAudioTrackOptions, createLocalAudioTrack } from "livekit-client";
-import { joinRoom, disconnectFromRoom } from "../../utils/socketio";
+import { createLocalAudioTrack } from "livekit-client";
+import { joinRoom } from "../../utils/socketio";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-const RoomPage = ({ leaveRoom, room }) => {
+const RoomPage = ({ leaveRoom, room, newRoom }) => {
     const { isHost, token, roomName } = room;
     let history = useHistory();
 
@@ -15,18 +15,33 @@ const RoomPage = ({ leaveRoom, room }) => {
         if (roomName) {
             joinRoom(roomName);
         }
+        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         if (leaveRoom) {
             history.push("/");
         }
+        // eslint-disable-next-line
     }, [leaveRoom]);
 
-    // const url = "ws://192.168.0.114:7880";
-    const url = "ws://localhost:7880";
-    // const token =
-    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzY1NDA5NTgsImlzcyI6IkFQSW4yNm1IVnJkTHhCbyIsImp0aSI6IlNjaGFsazIiLCJuYmYiOjE2MzM5NDg5NTgsInN1YiI6IlNjaGFsazIiLCJ2aWRlbyI6eyJyb29tIjoibXlyb29tIiwicm9vbUpvaW4iOnRydWV9fQ.QTxy5wq8bZ--yY9yyG5XD4FM7P2ByLav4H1oKkPfqTA";
+    const onConnected = async (room, isHost) => {
+        if (isHost === true) {
+            const { deviceId } = newRoom;
+            const audioTrackOptions = {
+                deviceId: deviceId,
+                autoGainControl: true,
+                echoCancellation: true,
+                name: "Host Audio Track",
+                noiseSuppression: true,
+            };
+            const track = await createLocalAudioTrack(audioTrackOptions);
+            const publishOptions = { simulcast: true };
+            room.localParticipant.publishTrack(track, publishOptions);
+        }
+    };
+
+    const url = "ws://192.168.8.102:7880";
     return (
         <div className="roomContainer">
             <LiveKitRoom
@@ -36,27 +51,6 @@ const RoomPage = ({ leaveRoom, room }) => {
             />
         </div>
     );
-};
-
-const onConnected = async (room, isHost) => {
-    if (isHost === true) {
-        const track = await createLocalAudioTrack();
-        console.log(track);
-
-        const publishOptions = {};
-        publishOptions.simulcast = true;
-        room.localParticipant.publishTrack(track, publishOptions);
-    }
-    // tracks.forEach((track) => {
-    //     const publishOptions = {};
-    //     publishOptions.simulcast = true;
-    //     room.localParticipant.publishTrack(track, publishOptions);
-    // });
-
-    // const audioTrack = await createLocalAudioTrack();
-    // await room.localParticipant.publishTrack(audioTrack);
-    // const videoTrack = await createLocalVideoTrack();
-    // await room.localParticipant.publishTrack(videoTrack);
 };
 
 const mapStoreStateToProps = (state) => {

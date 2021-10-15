@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const serverApi = "http://localhost:5001/api";
+const serverApi = "http://192.168.8.102:5001/api";
 // const serverApi = "http://192.168.0.114:5001/api";
 
 export const getToken = async (room) => {
