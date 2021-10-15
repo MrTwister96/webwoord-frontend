@@ -8,11 +8,8 @@ import { joinRoom } from "../../utils/socketio";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-const RoomPage = ({ leaveRoom }) => {
-    const query = new URLSearchParams(useLocation().search);
-    const token = query.get("token");
-    const host = query.get("host");
-    const roomName = query.get("roomName");
+const RoomPage = ({ leaveRoom, room }) => {
+    const { isHost, token, roomName } = room;
     let history = useHistory();
 
     useEffect(() => {
@@ -37,14 +34,14 @@ const RoomPage = ({ leaveRoom }) => {
             <LiveKitRoom
                 url={url}
                 token={token}
-                onConnected={(room) => onConnected(room, host)}
+                onConnected={(room) => onConnected(room, isHost)}
             />
         </div>
     );
 };
 
-const onConnected = async (room, host) => {
-    if (host === "true") {
+const onConnected = async (room, isHost) => {
+    if (isHost === true) {
         const track = await createLocalAudioTrack();
         console.log(track);
 

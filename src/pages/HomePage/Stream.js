@@ -1,23 +1,39 @@
 import React from "react";
 import { MdVolumeUp, MdLiveTv } from "react-icons/md";
 import { useHistory } from "react-router-dom";
-import { getToken } from "../../utils/api";
+import { getListenerToken } from "../../utils/api";
 import * as pokemon from "pokemon";
+import { connect } from "react-redux";
+import { setRoom } from "../../store/actions";
 
-const Stream = ({ streamer, speaker, description, listeners }) => {
+const Stream = ({
+    roomName,
+    streamer,
+    speaker,
+    description,
+    listeners,
+    setRoom,
+}) => {
     let history = useHistory();
 
     const handleJoinStream = async () => {
         const streamData = {
-            roomName: streamer,
+            roomName: roomName,
             identity: pokemon.random("en"),
             host: false,
         };
-        const response = await getToken(streamData);
+        const response = await getListenerToken(streamData);
+        console.log(response.token);
 
-        history.push(
-            `/room?token=${response.token}&host=false&roomName=${streamer}`
-        );
+        const room = {
+            isHost: false,
+            token: response.token,
+            roomName: roomName,
+        };
+
+        setRoom(room);
+
+        history.push(`/room`);
     };
 
     return (
@@ -46,4 +62,16 @@ const Stream = ({ streamer, speaker, description, listeners }) => {
     );
 };
 
-export default Stream;
+const mapStoreStateToProps = (state) => {
+    return {
+        ...state,
+    };
+};
+
+const mapActionsToProps = (dispatch) => {
+    return {
+        setRoom: (room) => dispatch(setRoom(room)),
+    };
+};
+
+export default connect(mapStoreStateToProps, mapActionsToProps)(Stream);

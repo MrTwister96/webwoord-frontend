@@ -1,7 +1,8 @@
 const actions = {
     SET_IDENTITY: "SET_IDENTITY",
     SET_STREAMS: "SET_STREAMS",
-    SET_NEW_STREAM: "SET_NEW_STREAM",
+    SET_NEW_ROOM: "SET_NEW_ROOM",
+    SET_ROOM: "SET_ROOM",
     SET_LEAVE_ROOM: "SET_LEAVE_ROOM",
 };
 
@@ -12,10 +13,17 @@ export const setStreams = (streams) => {
     };
 };
 
-export const setNewStream = (newStream) => {
+export const setNewRoom = (newRoom) => {
     return {
-        type: actions.SET_NEW_STREAM,
-        newStream,
+        type: actions.SET_NEW_ROOM,
+        newRoom,
+    };
+};
+
+export const setRoom = (room) => {
+    return {
+        type: actions.SET_ROOM,
+        room,
     };
 };
 

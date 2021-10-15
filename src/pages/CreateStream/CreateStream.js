@@ -4,21 +4,20 @@ import { getToken } from "../../utils/api";
 import Input from "./Input";
 import { BiCheck, BiChevronDown } from "react-icons/bi";
 import { Listbox, Transition } from "@headlessui/react";
-import { setNewStream } from "../../store/actions";
+import { setNewRoom, setRoom } from "../../store/actions";
 import { connect } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 
 const classNames = (...classes) => {
     return classes.filter(Boolean).join(" ");
 };
 
 // let audioInputs = [];
-const CreateStream = ({ newStream, setNewStream, identity }) => {
+const CreateStream = ({ setNewRoom, identity, setRoom }) => {
     let history = useHistory();
-
     const [kerkNaam, setKerkNaam] = useState("");
     const [prediker, setPrediker] = useState("");
     const [beskrywing, setBeskrywing] = useState("");
-
     const [audioInputs, setAudioInputs] = useState([
         {
             deviceId: "NONE",
@@ -26,18 +25,6 @@ const CreateStream = ({ newStream, setNewStream, identity }) => {
         },
     ]);
     const [selected, setSelected] = useState(audioInputs[0]);
-
-    const handleKerkNaamChange = async (event) => {
-        await setKerkNaam(event.target.value);
-    };
-
-    const handlePredikerChange = (event) => {
-        setPrediker(event.target.value);
-    };
-
-    const handleBeskrywingChange = (event) => {
-        setBeskrywing(event.target.value);
-    };
 
     const validateInputs = () => {
         if (
@@ -54,26 +41,30 @@ const CreateStream = ({ newStream, setNewStream, identity }) => {
 
     const handleCreateStream = async (event) => {
         event.preventDefault();
+
         if (validateInputs()) {
-            const stream = {
-                kerkNaam,
-                prediker,
-                beskrywing,
+            const newRoom = {
+                roomName: uuidv4(),
+                roomHost: kerkNaam,
+                roomHostSocketId: identity,
+                isHost: true,
+                prediker: prediker,
+                beskrywing: beskrywing,
                 deviceId: selected.deviceId,
-                roomName: `${kerkNaam}-${prediker}-${beskrywing}`,
             };
 
-            setNewStream(stream);
+            setNewRoom(newRoom);
+            const response = await getToken(newRoom);
 
-            const streamData = {
-                roomName: `${kerkNaam}-${prediker}-${beskrywing}`,
-                identity: prediker,
-                host: true,
-                socketId: identity,
+            const room = {
+                isHost: true,
+                token: response.token,
+                roomName: null,
             };
-            const response = await getToken(streamData);
 
-            history.push(`/room?token=${response.token}&host=true`);
+            setRoom(room);
+
+            history.push(`/room`);
         } else {
             alert("Please complete all the fields");
         }
@@ -105,17 +96,17 @@ const CreateStream = ({ newStream, setNewStream, identity }) => {
                     <Input
                         label="Kerk Naam"
                         placeholder="Kerk Naam"
-                        onChange={handleKerkNaamChange}
+                        onChange={(event) => setKerkNaam(event.target.value)}
                     />
                     <Input
                         label="Prediker"
                         placeholder="Prediker"
-                        onChange={handlePredikerChange}
+                        onChange={(event) => setPrediker(event.target.value)}
                     />
                     <Input
                         label="Beskrywing"
                         placeholder="Beskrywing"
-                        onChange={handleBeskrywingChange}
+                        onChange={(event) => setBeskrywing(event.target.value)}
                     />
 
                     <Listbox value={selected} onChange={setSelected}>
@@ -225,7 +216,8 @@ const mapStoreStateToProps = (state) => {
 
 const mapActionsToProps = (dispatch) => {
     return {
-        setNewStream: (newStream) => dispatch(setNewStream(newStream)),
+        setNewRoom: (newRoom) => dispatch(setNewRoom(newRoom)),
+        setRoom: (room) => dispatch(setRoom(room)),
     };
 };
 

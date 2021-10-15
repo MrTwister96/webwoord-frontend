@@ -4,11 +4,19 @@ const initialState = {
     identity: "",
     leaveRoom: false,
     streams: [],
-    newStream: {
-        kerkNaam: "",
+    newRoom: {
+        roomName: "",
+        roomHost: "",
+        roomHostSocketId: "",
+        isHost: true,
         prediker: "",
         beskrywing: "",
         deviceId: "",
+    },
+    room: {
+        isHost: false,
+        token: null,
+        roomName: null,
     },
 };
 
@@ -24,10 +32,15 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 streams: action.streams,
             };
-        case actions.SET_NEW_STREAM:
+        case actions.SET_NEW_ROOM:
             return {
                 ...state,
-                newStream: action.newStream,
+                newRoom: action.newRoom,
+            };
+        case actions.SET_ROOM:
+            return {
+                ...state,
+                room: action.room,
             };
         case actions.SET_LEAVE_ROOM:
             return {

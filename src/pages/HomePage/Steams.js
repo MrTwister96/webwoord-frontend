@@ -8,16 +8,22 @@ const Steams = ({ streams }) => {
         <>
             <div className="flex flex-1 flex-col items-center space-y-3 py-20  min-h-screen ">
                 {streams.map((stream, index) => {
-                    const { streamer, speaker, description, listeners } =
-                        stream;
+                    const {
+                        roomName,
+                        roomHost,
+                        prediker,
+                        beskrywing,
+                        listenerCount,
+                    } = stream;
 
                     return (
                         <Stream
                             key={`${index}`}
-                            streamer={streamer}
-                            speaker={speaker}
-                            description={description}
-                            listeners={listeners}
+                            roomName={roomName}
+                            streamer={roomHost}
+                            speaker={prediker}
+                            description={beskrywing}
+                            listeners={listenerCount}
                         />
                     );
                 })}

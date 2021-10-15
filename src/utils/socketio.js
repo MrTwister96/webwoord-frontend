@@ -15,8 +15,8 @@ const connectToSocketIoServer = () => {
         store.dispatch(setIdentity(socket.id));
     });
 
-    socket.on("all-streams", (streams) => {
-        store.dispatch(setStreams(streams));
+    socket.on("update-rooms", (rooms) => {
+        store.dispatch(setStreams(rooms));
     });
 
     socket.on("leave-room", () => {
