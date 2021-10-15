@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { setLeaveRoom } from "../../store/actions";
 // Components
-import Steams from "./Steams";
 import NavBar from "./NavBar";
+import Rooms from "./Rooms";
 
 const HomePage = ({ leaveRoom, setLeaveRoom }) => {
     let history = useHistory();
@@ -18,7 +18,7 @@ const HomePage = ({ leaveRoom, setLeaveRoom }) => {
     return (
         <div className="flex flex-col bg-gray-900">
             <NavBar />
-            <Steams />
+            <Rooms />
         </div>
     );
 };

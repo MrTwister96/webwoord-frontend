@@ -1,15 +1,15 @@
 const actions = {
     SET_IDENTITY: "SET_IDENTITY",
-    SET_STREAMS: "SET_STREAMS",
+    SET_ROOMS: "SET_ROOMS",
     SET_NEW_ROOM: "SET_NEW_ROOM",
     SET_ROOM: "SET_ROOM",
     SET_LEAVE_ROOM: "SET_LEAVE_ROOM",
 };
 
-export const setStreams = (streams) => {
+export const setRooms = (rooms) => {
     return {
-        type: actions.SET_STREAMS,
-        streams,
+        type: actions.SET_ROOMS,
+        rooms,
     };
 };
 

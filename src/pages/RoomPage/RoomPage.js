@@ -3,8 +3,7 @@ import { LiveKitRoom } from "livekit-react";
 import "livekit-react/dist/index.css";
 import "react-aspect-ratio/aspect-ratio.css";
 import { CreateAudioTrackOptions, createLocalAudioTrack } from "livekit-client";
-import { useLocation } from "react-router-dom";
-import { joinRoom } from "../../utils/socketio";
+import { joinRoom, disconnectFromRoom } from "../../utils/socketio";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -14,7 +13,6 @@ const RoomPage = ({ leaveRoom, room }) => {
 
     useEffect(() => {
         if (roomName) {
-            console.log(roomName);
             joinRoom(roomName);
         }
     }, []);

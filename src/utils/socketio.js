@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 import store from "../store/store";
-import { setIdentity, setLeaveRoom, setStreams } from "../store/actions";
+import { setIdentity, setLeaveRoom, setRooms } from "../store/actions";
 
 // const SERVER = "http://192.168.0.114:5001";
 const SERVER = "http://localhost:5001";
@@ -16,7 +16,7 @@ const connectToSocketIoServer = () => {
     });
 
     socket.on("update-rooms", (rooms) => {
-        store.dispatch(setStreams(rooms));
+        store.dispatch(setRooms(rooms));
     });
 
     socket.on("leave-room", () => {
@@ -26,7 +26,6 @@ const connectToSocketIoServer = () => {
 };
 
 const joinRoom = (roomName) => {
-    console.log(`Test ${roomName}`);
     socket.emit("join-room", roomName);
 };
 

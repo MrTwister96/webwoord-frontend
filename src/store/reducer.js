@@ -3,7 +3,7 @@ import actions from "./actions";
 const initialState = {
     identity: "",
     leaveRoom: false,
-    streams: [],
+    rooms: [],
     newRoom: {
         roomName: "",
         roomHost: "",
@@ -27,10 +27,10 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 identity: action.identity,
             };
-        case actions.SET_STREAMS:
+        case actions.SET_ROOMS:
             return {
                 ...state,
-                streams: action.streams,
+                rooms: action.rooms,
             };
         case actions.SET_NEW_ROOM:
             return {

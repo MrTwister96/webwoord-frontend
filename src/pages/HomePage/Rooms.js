@@ -1,29 +1,28 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setStreams } from "../../store/actions";
-import Stream from "./Stream";
+import Room from "./Room";
 
-const Steams = ({ streams }) => {
+const Rooms = ({ rooms }) => {
     return (
         <>
             <div className="flex flex-1 flex-col items-center space-y-3 py-20  min-h-screen ">
-                {streams.map((stream, index) => {
+                {rooms.map((room, index) => {
                     const {
                         roomName,
                         roomHost,
                         prediker,
                         beskrywing,
                         listenerCount,
-                    } = stream;
+                    } = room;
 
                     return (
-                        <Stream
+                        <Room
                             key={`${index}`}
                             roomName={roomName}
-                            streamer={roomHost}
-                            speaker={prediker}
-                            description={beskrywing}
-                            listeners={listenerCount}
+                            roomHost={roomHost}
+                            prediker={prediker}
+                            beskrywing={beskrywing}
+                            listenerCount={listenerCount}
                         />
                     );
                 })}
@@ -38,10 +37,4 @@ const mapStoreStateToProps = (state) => {
     };
 };
 
-const mapActionsToProps = (dispatch) => {
-    return {
-        setStreams: (streams) => dispatch(setStreams(streams)),
-    };
-};
-
-export default connect(mapStoreStateToProps, mapActionsToProps)(Steams);
+export default connect(mapStoreStateToProps)(Rooms);
