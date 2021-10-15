@@ -1,14 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LiveKitRoom } from "livekit-react";
 import "livekit-react/dist/index.css";
 import "react-aspect-ratio/aspect-ratio.css";
 import { CreateAudioTrackOptions, createLocalAudioTrack } from "livekit-client";
 import { useLocation } from "react-router-dom";
+import { joinRoom } from "../../utils/socketio";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
-const RoomPage = () => {
+const RoomPage = ({ leaveRoom }) => {
     const query = new URLSearchParams(useLocation().search);
     const token = query.get("token");
     const host = query.get("host");
+    const roomName = query.get("roomName");
+    let history = useHistory();
+
+    useEffect(() => {
+        if (roomName) {
+            console.log(roomName);
+            joinRoom(roomName);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (leaveRoom) {
+            history.push("/");
+        }
+    }, [leaveRoom]);
 
     // const url = "ws://192.168.0.114:7880";
     const url = "ws://localhost:7880";
@@ -46,4 +64,10 @@ const onConnected = async (room, host) => {
     // await room.localParticipant.publishTrack(videoTrack);
 };
 
-export default RoomPage;
+const mapStoreStateToProps = (state) => {
+    return {
+        ...state,
+    };
+};
+
+export default connect(mapStoreStateToProps)(RoomPage);

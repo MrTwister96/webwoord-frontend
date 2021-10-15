@@ -15,7 +15,9 @@ const Stream = ({ streamer, speaker, description, listeners }) => {
         };
         const response = await getToken(streamData);
 
-        history.push(`/room?token=${response.token}&host=false`);
+        history.push(
+            `/room?token=${response.token}&host=false&roomName=${streamer}`
+        );
     };
 
     return (

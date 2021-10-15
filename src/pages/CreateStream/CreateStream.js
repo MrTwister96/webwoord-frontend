@@ -12,7 +12,7 @@ const classNames = (...classes) => {
 };
 
 // let audioInputs = [];
-const CreateStream = ({ newStream, setNewStream }) => {
+const CreateStream = ({ newStream, setNewStream, identity }) => {
     let history = useHistory();
 
     const [kerkNaam, setKerkNaam] = useState("");
@@ -60,15 +60,16 @@ const CreateStream = ({ newStream, setNewStream }) => {
                 prediker,
                 beskrywing,
                 deviceId: selected.deviceId,
-                roomName: `${kerkNaam}#${prediker}#${beskrywing}`,
+                roomName: `${kerkNaam}-${prediker}-${beskrywing}`,
             };
 
             setNewStream(stream);
 
             const streamData = {
-                roomName: `${kerkNaam}#${prediker}#${beskrywing}`,
+                roomName: `${kerkNaam}-${prediker}-${beskrywing}`,
                 identity: prediker,
                 host: true,
+                socketId: identity,
             };
             const response = await getToken(streamData);
 

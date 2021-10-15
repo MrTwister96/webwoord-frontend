@@ -2,6 +2,7 @@ const actions = {
     SET_IDENTITY: "SET_IDENTITY",
     SET_STREAMS: "SET_STREAMS",
     SET_NEW_STREAM: "SET_NEW_STREAM",
+    SET_LEAVE_ROOM: "SET_LEAVE_ROOM",
 };
 
 export const setStreams = (streams) => {
@@ -22,6 +23,13 @@ export const setIdentity = (identity) => {
     return {
         type: actions.SET_IDENTITY,
         identity,
+    };
+};
+
+export const setLeaveRoom = (leaveRoom) => {
+    return {
+        type: actions.SET_LEAVE_ROOM,
+        leaveRoom,
     };
 };
 

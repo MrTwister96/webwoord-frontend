@@ -2,6 +2,7 @@ import actions from "./actions";
 
 const initialState = {
     identity: "",
+    leaveRoom: false,
     streams: [],
     newStream: {
         kerkNaam: "",
@@ -27,6 +28,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 newStream: action.newStream,
+            };
+        case actions.SET_LEAVE_ROOM:
+            return {
+                ...state,
+                leaveRoom: action.leaveRoom,
             };
         default:
             return state;
