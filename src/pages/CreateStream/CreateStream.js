@@ -4,7 +4,7 @@ import { getToken } from "../../utils/api";
 import Input from "./Input";
 import { BiCheck, BiChevronDown } from "react-icons/bi";
 import { Listbox, Transition } from "@headlessui/react";
-import { setNewRoom, setRoom } from "../../store/actions";
+import { setNewRoom, setActiveRoom } from "../../store/actions";
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 
@@ -13,7 +13,7 @@ const classNames = (...classes) => {
 };
 
 // let audioInputs = [];
-const CreateStream = ({ setNewRoom, identity, setRoom }) => {
+const CreateStream = ({ setNewRoom, identity, setActiveRoom }) => {
     let history = useHistory();
     const [kerkNaam, setKerkNaam] = useState("");
     const [prediker, setPrediker] = useState("");
@@ -60,9 +60,12 @@ const CreateStream = ({ setNewRoom, identity, setRoom }) => {
                 isHost: true,
                 token: response.token,
                 roomName: null,
+                roomHost: kerkNaam,
+                prediker: prediker,
+                beskrywing: beskrywing,
             };
 
-            setRoom(room);
+            setActiveRoom(room);
 
             history.push(`/room`);
         } else {
@@ -217,7 +220,7 @@ const mapStoreStateToProps = (state) => {
 const mapActionsToProps = (dispatch) => {
     return {
         setNewRoom: (newRoom) => dispatch(setNewRoom(newRoom)),
-        setRoom: (room) => dispatch(setRoom(room)),
+        setActiveRoom: (room) => dispatch(setActiveRoom(room)),
     };
 };
 

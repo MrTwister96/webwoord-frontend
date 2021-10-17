@@ -5,10 +5,10 @@ import { useHistory } from "react-router-dom";
 import { getListenerToken } from "../../utils/api";
 import * as pokemon from "pokemon";
 import { connect } from "react-redux";
-import { setRoom } from "../../store/actions";
+import { setActiveRoom } from "../../store/actions";
 
 const Room = ({
-    setRoom,
+    setActiveRoom,
     roomName,
     roomHost,
     prediker,
@@ -22,6 +22,9 @@ const Room = ({
             roomName: roomName,
             identity: pokemon.random("en"),
             isHost: false,
+            roomHost: roomHost,
+            prediker: prediker,
+            beskrywing: beskrywing,
         };
         const response = await getListenerToken(room);
 
@@ -30,7 +33,7 @@ const Room = ({
             token: response.token,
         };
 
-        setRoom(room);
+        setActiveRoom(room);
 
         history.push(`/room`);
     };
@@ -69,7 +72,7 @@ const mapStoreStateToProps = (state) => {
 
 const mapActionsToProps = (dispatch) => {
     return {
-        setRoom: (room) => dispatch(setRoom(room)),
+        setActiveRoom: (room) => dispatch(setActiveRoom(room)),
     };
 };
 

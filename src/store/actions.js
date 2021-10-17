@@ -2,7 +2,7 @@ const actions = {
     SET_IDENTITY: "SET_IDENTITY",
     SET_ROOMS: "SET_ROOMS",
     SET_NEW_ROOM: "SET_NEW_ROOM",
-    SET_ROOM: "SET_ROOM",
+    SET_ACTIVE_ROOM: "SET_ACTIVE_ROOM",
     SET_LEAVE_ROOM: "SET_LEAVE_ROOM",
 };
 
@@ -20,10 +20,10 @@ export const setNewRoom = (newRoom) => {
     };
 };
 
-export const setRoom = (room) => {
+export const setActiveRoom = (activeRoom) => {
     return {
-        type: actions.SET_ROOM,
-        room,
+        type: actions.SET_ACTIVE_ROOM,
+        activeRoom,
     };
 };
 

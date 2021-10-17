@@ -13,7 +13,7 @@ const initialState = {
         beskrywing: "",
         deviceId: "",
     },
-    room: {
+    activeRoom: {
         isHost: false,
         token: null,
         roomName: null,
@@ -37,10 +37,10 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 newRoom: action.newRoom,
             };
-        case actions.SET_ROOM:
+        case actions.SET_ACTIVE_ROOM:
             return {
                 ...state,
-                room: action.room,
+                activeRoom: action.activeRoom,
             };
         case actions.SET_LEAVE_ROOM:
             return {
