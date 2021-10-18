@@ -10,7 +10,8 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
     const { isHost, token, roomName, roomHost, prediker, beskrywing } =
         activeRoom;
     const { connect, isConnecting, room, error, participants } = useRoom();
-    const url = "ws://192.168.0.119:7880";
+    // const url = "ws://192.168.0.119:7880";
+    const url = "wss://ptype.app/";
 
     useEffect(() => {
         if (roomName) {

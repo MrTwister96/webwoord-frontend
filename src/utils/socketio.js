@@ -2,7 +2,8 @@ import io from "socket.io-client";
 import store from "../store/store";
 import { setIdentity, setLeaveRoom, setRooms } from "../store/actions";
 
-const SERVER = "http://192.168.0.119:5001";
+// const SERVER = "http://192.168.8.102:5001";
+const SERVER = "https://boiling-caverns-36417.herokuapp.com";
 
 let socket = null;
 
@@ -26,6 +27,10 @@ const connectToSocketIoServer = () => {
 
 const joinRoom = (roomName) => {
     socket.emit("join-room", roomName);
+};
+
+export const showstreams = () => {
+    socket.emit("show-streams");
 };
 
 export { connectToSocketIoServer, joinRoom };

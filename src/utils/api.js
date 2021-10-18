@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const serverApi = "http://192.168.0.119:5001/api";
+// const serverApi = "http://192.168.8.102:5001/api";
+const serverApi = "https://boiling-caverns-36417.herokuapp.com/api";
 
 export const getToken = async (room) => {
     const {
