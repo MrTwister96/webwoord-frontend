@@ -8,6 +8,7 @@ import RoomPage from "./pages/RoomPage/RoomPage";
 import CreateStream from "./pages/CreateStream/CreateStream";
 // Styles
 import "./App.css";
+import Administrators from "./pages/Administrators/Administrators";
 
 const App = () => {
     useEffect(() => {
@@ -17,6 +18,9 @@ const App = () => {
     return (
         <Router>
             <Switch>
+                <Route path="/admin">
+                    <Administrators />
+                </Route>
                 <Route path="/room">
                     <RoomPage />
                 </Route>

@@ -1,20 +1,29 @@
 const actions = {
     SET_IDENTITY: "SET_IDENTITY",
-    SET_STREAMS: "SET_STREAMS",
-    SET_NEW_STREAM: "SET_NEW_STREAM",
+    SET_ROOMS: "SET_ROOMS",
+    SET_NEW_ROOM: "SET_NEW_ROOM",
+    SET_ACTIVE_ROOM: "SET_ACTIVE_ROOM",
+    SET_LEAVE_ROOM: "SET_LEAVE_ROOM",
 };
 
-export const setStreams = (streams) => {
+export const setRooms = (rooms) => {
     return {
-        type: actions.SET_STREAMS,
-        streams,
+        type: actions.SET_ROOMS,
+        rooms,
     };
 };
 
-export const setNewStream = (newStream) => {
+export const setNewRoom = (newRoom) => {
     return {
-        type: actions.SET_NEW_STREAM,
-        newStream,
+        type: actions.SET_NEW_ROOM,
+        newRoom,
+    };
+};
+
+export const setActiveRoom = (activeRoom) => {
+    return {
+        type: actions.SET_ACTIVE_ROOM,
+        activeRoom,
     };
 };
 
@@ -22,6 +31,13 @@ export const setIdentity = (identity) => {
     return {
         type: actions.SET_IDENTITY,
         identity,
+    };
+};
+
+export const setLeaveRoom = (leaveRoom) => {
+    return {
+        type: actions.SET_LEAVE_ROOM,
+        leaveRoom,
     };
 };
 

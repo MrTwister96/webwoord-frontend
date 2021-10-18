@@ -2,12 +2,21 @@ import actions from "./actions";
 
 const initialState = {
     identity: "",
-    streams: [],
-    newStream: {
-        kerkNaam: "",
+    leaveRoom: false,
+    rooms: [],
+    newRoom: {
+        roomName: "",
+        roomHost: "",
+        roomHostSocketId: "",
+        isHost: true,
         prediker: "",
         beskrywing: "",
         deviceId: "",
+    },
+    activeRoom: {
+        isHost: false,
+        token: null,
+        roomName: null,
     },
 };
 
@@ -18,15 +27,25 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 identity: action.identity,
             };
-        case actions.SET_STREAMS:
+        case actions.SET_ROOMS:
             return {
                 ...state,
-                streams: action.streams,
+                rooms: action.rooms,
             };
-        case actions.SET_NEW_STREAM:
+        case actions.SET_NEW_ROOM:
             return {
                 ...state,
-                newStream: action.newStream,
+                newRoom: action.newRoom,
+            };
+        case actions.SET_ACTIVE_ROOM:
+            return {
+                ...state,
+                activeRoom: action.activeRoom,
+            };
+        case actions.SET_LEAVE_ROOM:
+            return {
+                ...state,
+                leaveRoom: action.leaveRoom,
             };
         default:
             return state;
