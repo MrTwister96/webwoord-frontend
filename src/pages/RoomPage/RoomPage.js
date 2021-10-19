@@ -56,10 +56,12 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
                 <div className="m-3 text-white">
                     <p className="text-xl font-bold">{roomHost}</p>
                     {participants.map((participant, index) => {
+                        console.log(participant);
                         return (
                             <Participant
                                 key={index}
                                 participant={participant}
+                                activeRoom={activeRoom}
                             />
                         );
                     })}
@@ -88,13 +90,15 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
     );
 };
 
-const Participant = ({ participant }) => {
+const Participant = ({ participant, activeRoom }) => {
     const { subscribedTracks } = useParticipant(participant);
 
     if (
         subscribedTracks.length > 0 &&
-        subscribedTracks[0].constructor.name === "RemoteTrackPublication"
+        activeRoom.identity !== participant.identity
     ) {
+        console.log(subscribedTracks);
+
         return (
             <AudioRenderer
                 track={subscribedTracks[0].audioTrack}

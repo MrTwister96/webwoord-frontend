@@ -63,6 +63,7 @@ const CreateStream = ({ setNewRoom, identity, setActiveRoom }) => {
                 roomHost: kerkNaam,
                 prediker: prediker,
                 beskrywing: beskrywing,
+                identity: kerkNaam,
             };
 
             setActiveRoom(room);
@@ -74,22 +75,28 @@ const CreateStream = ({ setNewRoom, identity, setActiveRoom }) => {
     };
 
     useEffect(() => {
-        navigator.mediaDevices.enumerateDevices().then((devices) => {
-            let devs = [];
-            devices.forEach((device) => {
-                if (
-                    device.kind === "audioinput" &&
-                    device.deviceId !== "default"
-                ) {
-                    const dev = {
-                        deviceId: device.deviceId,
-                        label: device.label,
-                    };
-                    devs = [...devs, dev];
-                }
+        console.log("testing here");
+        navigator.mediaDevices
+            .getUserMedia({ audio: true, video: false })
+            .then((s) => {
+                navigator.mediaDevices.enumerateDevices().then((devices) => {
+                    let devs = [];
+                    devices.forEach((device) => {
+                        console.log(device);
+                        if (
+                            device.kind === "audioinput" &&
+                            device.deviceId !== "default"
+                        ) {
+                            const dev = {
+                                deviceId: device.deviceId,
+                                label: device.label,
+                            };
+                            devs = [...devs, dev];
+                        }
+                    });
+                    setAudioInputs(devs);
+                });
             });
-            setAudioInputs(devs);
-        });
     }, []);
 
     return (
