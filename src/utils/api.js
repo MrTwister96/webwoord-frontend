@@ -4,39 +4,29 @@ import axios from "axios";
 const serverApi = "https://agile-chamber-55425.herokuapp.com/api";
 
 export const getToken = async (room) => {
-    const {
-        roomName,
-        roomHost,
-        roomHostSocketId,
-        isHost,
-        prediker,
-        beskrywing,
-    } = room;
+    const { roomName, identity, isHost } = room;
 
-    const params = new URLSearchParams([
-        ["roomName", roomName],
-        ["roomHost", roomHost],
-        ["roomHostSocketId", roomHostSocketId],
-        ["isHost", isHost],
-        ["prediker", prediker],
-        ["beskrywing", beskrywing],
-    ]);
+    let params;
+
+    if (isHost) {
+        const { roomHostSocketId, prediker, beskrywing } = room;
+
+        params = new URLSearchParams([
+            ["roomName", roomName],
+            ["identity", identity],
+            ["roomHostSocketId", roomHostSocketId],
+            ["isHost", isHost],
+            ["prediker", prediker],
+            ["beskrywing", beskrywing],
+        ]);
+    } else {
+        params = new URLSearchParams([
+            ["roomName", roomName],
+            ["identity", identity],
+            ["isHost", isHost],
+        ]);
+    }
 
     const response = await axios.get(`${serverApi}/get-token`, { params });
-    return response.data;
-};
-
-export const getListenerToken = async (room) => {
-    const { roomName, identity, host } = room;
-
-    const params = new URLSearchParams([
-        ["roomName", roomName],
-        ["identity", identity],
-        ["host", host],
-    ]);
-
-    const response = await axios.get(`${serverApi}/get-listener-token`, {
-        params,
-    });
     return response.data;
 };

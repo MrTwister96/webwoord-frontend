@@ -2,7 +2,7 @@ import React from "react";
 // eslint-disable-next-line
 import { MdVolumeUp, MdLiveTv } from "react-icons/md";
 import { useHistory } from "react-router-dom";
-import { getListenerToken } from "../../utils/api";
+import { getToken } from "../../utils/api";
 import * as pokemon from "pokemon";
 import { connect } from "react-redux";
 import { setActiveRoom } from "../../store/actions";
@@ -26,7 +26,7 @@ const Room = ({
             prediker: prediker,
             beskrywing: beskrywing,
         };
-        const response = await getListenerToken(room);
+        const response = await getToken(room);
 
         room = {
             ...room,

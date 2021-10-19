@@ -45,7 +45,7 @@ const CreateStream = ({ setNewRoom, identity, setActiveRoom }) => {
         if (validateInputs()) {
             const newRoom = {
                 roomName: uuidv4(),
-                roomHost: kerkNaam,
+                identity: kerkNaam,
                 roomHostSocketId: identity,
                 isHost: true,
                 prediker: prediker,
