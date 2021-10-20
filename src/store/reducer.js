@@ -1,9 +1,9 @@
 import actions from "./actions";
 
 const initialState = {
-    identity: "",
+    identity: null,
     leaveRoom: false,
-    rooms: [],
+    rooms: null,
     newRoom: {
         roomName: "",
         roomHost: "",

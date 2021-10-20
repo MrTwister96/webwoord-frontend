@@ -5,8 +5,9 @@ import { setLeaveRoom } from "../../store/actions";
 // Components
 import NavBar from "./NavBar";
 import Rooms from "./Rooms";
+import Loader from "../../components/Loader";
 
-const HomePage = ({ leaveRoom, setLeaveRoom }) => {
+const HomePage = ({ leaveRoom, setLeaveRoom, identity, rooms }) => {
     let history = useHistory();
 
     useEffect(() => {
@@ -16,6 +17,13 @@ const HomePage = ({ leaveRoom, setLeaveRoom }) => {
         }
         // eslint-disable-next-line
     }, []);
+
+    if (!identity) {
+        return <Loader />;
+    } else if (rooms === null) {
+        return <Loader />;
+    }
+
     return (
         <div className="flex flex-col bg-gray-900">
             <NavBar />
