@@ -10,7 +10,6 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
     const { isHost, token, roomName, roomHost, prediker, beskrywing } =
         activeRoom;
     const { connect, isConnecting, room, error, participants } = useRoom();
-    // const url = "ws://192.168.0.119:7880";
     const url = "wss://ptype.app/";
 
     useEffect(() => {
@@ -18,15 +17,25 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
             joinRoom(roomName);
         }
 
+        // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
         connect(url, token).then((room) => {
             onConnected(room, isHost);
         });
+
+        // THIS DOES NOT WORK!?!?!?!
+        // return () => {
+        //     room.disconnect();
+        // };
 
         // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         if (leaveRoom) {
+            room.disconnect();
             history.push("/");
         }
         // eslint-disable-next-line
@@ -48,6 +57,11 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
             const publishOptions = {};
             room.localParticipant.publishTrack(track, publishOptions);
         }
+    };
+
+    const disconnect = () => {
+        room.disconnect();
+        history.push("/");
     };
 
     return (
@@ -81,6 +95,7 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
                     <button
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         type="button"
+                        onClick={disconnect}
                     >
                         Disconnect
                     </button>

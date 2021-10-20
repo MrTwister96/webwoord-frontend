@@ -34,8 +34,4 @@ const joinRoom = (roomName) => {
     socket.emit("join-room", roomName);
 };
 
-export const showstreams = () => {
-    socket.emit("show-streams");
-};
-
 export { connectToSocketIoServer, joinRoom };
