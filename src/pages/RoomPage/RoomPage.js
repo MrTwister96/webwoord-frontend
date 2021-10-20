@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AudioRenderer, useParticipant, useRoom } from "livekit-react";
-import { createLocalAudioTrack } from "livekit-client";
+import { createLocalAudioTrack, RoomEvent } from "livekit-client";
 import { useHistory } from "react-router-dom";
 import { connect as connectRedux } from "react-redux";
 import { joinRoom } from "../../utils/socketio";
@@ -12,36 +12,48 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
     const { isHost, token, roomName, roomHost, prediker, beskrywing } =
         activeRoom;
     const { connect, isConnecting, room, error, participants } = useRoom();
+    const [listeners, setListeners] = useState(0);
     const url = "wss://ptype.app/";
 
     useEffect(() => {
         if (roomName) {
             joinRoom(roomName);
+        } else {
+            if (isHost === false) {
+                history.push("/");
+            }
         }
 
-        // eslint-disable-next-line
-    }, []);
-
-    useEffect(() => {
-        connect(url, token).then((room) => {
-            onConnected(room, isHost);
-        });
-
-        // THIS DOES NOT WORK!?!?!?!
-        // return () => {
-        //     room.disconnect();
-        // };
+        if (token) {
+            connect(url, token)
+                .then((room) => {
+                    room.on(RoomEvent.ParticipantConnected, () =>
+                        updateParticipantSize(room)
+                    );
+                    room.on(RoomEvent.ParticipantDisconnected, () =>
+                        updateParticipantSize(room)
+                    );
+                    updateParticipantSize(room);
+                    onConnected(room, isHost);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
 
         // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         if (leaveRoom) {
-            room.disconnect();
             history.push("/");
         }
         // eslint-disable-next-line
     }, [leaveRoom]);
+
+    const updateParticipantSize = (room) => {
+        setListeners(room.participants.size);
+    };
 
     const onConnected = async (room, isHost) => {
         if (isHost === true) {
@@ -62,7 +74,6 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
     };
 
     const disconnect = () => {
-        room.disconnect();
         history.push("/");
     };
 
@@ -95,8 +106,10 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
                     </p>
                 </div>
                 <div className="flex items-center justify-between w-full py-3 px-5">
-                    <button className="inline-block align-baseline text-red-500 hover:text-red-800">
-                        <p className="text-xl font-bold">Listeners: a</p>
+                    <button className="inline-block align-baseline text-green-500 hover:text-green-800">
+                        <p className="text-xl font-bold">
+                            Listeners: {listeners}
+                        </p>
                     </button>
                     <button
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -118,8 +131,6 @@ const Participant = ({ participant, activeRoom }) => {
         subscribedTracks.length > 0 &&
         activeRoom.identity !== participant.identity
     ) {
-        console.log(subscribedTracks);
-
         return (
             <AudioRenderer
                 track={subscribedTracks[0].audioTrack}

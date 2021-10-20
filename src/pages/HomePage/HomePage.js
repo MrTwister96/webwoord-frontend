@@ -18,9 +18,7 @@ const HomePage = ({ leaveRoom, setLeaveRoom, identity, rooms }) => {
         // eslint-disable-next-line
     }, []);
 
-    if (!identity) {
-        return <Loader />;
-    } else if (rooms === null) {
+    if (!identity || rooms === null) {
         return <Loader />;
     }
 
