@@ -13,7 +13,7 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
         activeRoom;
     const { connect, isConnecting, room, error, participants } = useRoom();
     const [listeners, setListeners] = useState(0);
-    const url = "wss://ptype.app/";
+    const url = "wss://banshee.ptype.app/";
 
     useEffect(() => {
         if (roomName) {
@@ -74,7 +74,7 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
     };
 
     const disconnect = () => {
-        history.push("/");
+        history.go(0);
     };
 
     if (isConnecting) {
@@ -83,7 +83,7 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
 
     return (
         <div className="flex bg-gray-900 min-h-screen min-w-screen space-x-4 justify-center items-center">
-            <div className="flex flex-col bg-gray-800 h-80 w-6/12 rounded-lg items-center justify-between">
+            <div className="flex flex-col bg-gray-800 h-80 w-full sm:w-10/12 md:w-8/12 lg:w-6/12 rounded-lg items-center justify-between">
                 <div className="m-3 text-white">
                     <p className="text-xl font-bold">{roomHost}</p>
                     {participants.map((participant, index) => {
@@ -112,7 +112,7 @@ const RoomPage = ({ leaveRoom, activeRoom, newRoom }) => {
                         </p>
                     </button>
                     <button
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline"
                         type="button"
                         onClick={disconnect}
                     >
