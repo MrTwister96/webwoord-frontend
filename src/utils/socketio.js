@@ -2,13 +2,12 @@ import io from "socket.io-client";
 import store from "../store/store";
 import { setIdentity, setLeaveRoom, setRooms } from "../store/actions";
 
-// const SERVER = "http://192.168.8.102:5001";
-const SERVER = "https://agile-chamber-55425.herokuapp.com";
+const APISERVER = "https://webwoord-api.ptype.app";
 
 let socket = null;
 
 const connectToSocketIoServer = () => {
-    socket = io(SERVER, {
+    socket = io(APISERVER, {
         withCredentials: true,
         extraHeaders: {
             "my-custom-header": "abcd",

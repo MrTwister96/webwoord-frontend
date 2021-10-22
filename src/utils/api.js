@@ -1,7 +1,6 @@
 import axios from "axios";
 
-// const serverApi = "http://192.168.8.102:5001/api";
-const serverApi = "https://agile-chamber-55425.herokuapp.com/api";
+const APISERVER = "https://webwoord-api.ptype.app/api";
 
 export const getToken = async (room) => {
     const { roomName, identity, isHost } = room;
@@ -27,6 +26,6 @@ export const getToken = async (room) => {
         ]);
     }
 
-    const response = await axios.get(`${serverApi}/get-token`, { params });
+    const response = await axios.get(`${APISERVER}/get-token`, { params });
     return response.data;
 };
