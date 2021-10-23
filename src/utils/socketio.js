@@ -2,7 +2,7 @@ import io from "socket.io-client";
 import store from "../store/store";
 import { setIdentity, setLeaveRoom, setRooms } from "../store/actions";
 
-const APISERVER = "https://webwoord-api.ptype.app";
+const APISERVER = "https://webwoord-api-fqdn-here";
 
 let socket = null;
 

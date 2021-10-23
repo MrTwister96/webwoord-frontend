@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const APISERVER = "https://webwoord-api.ptype.app/api";
+const APISERVER = "https://webwoord-api-fqdn-here/api";
 
 export const getToken = async (room) => {
     const { roomName, identity, isHost } = room;
