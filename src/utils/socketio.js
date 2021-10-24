@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 import store from "../store/store";
-import { setIdentity, setLeaveRoom, setRooms } from "../store/actions";
+import { setLeaveRoom, setRooms, setSocket } from "../store/actions";
 
 const APISERVER = "https://webwoord-api-fqdn-here";
 
@@ -15,8 +15,8 @@ const connectToSocketIoServer = () => {
     });
 
     socket.on("connect", () => {
-        console.log(`Connected to Socket.IO server: ${socket.id}`);
-        store.dispatch(setIdentity(socket.id));
+        console.info(`Connected to Socket.IO server: ${socket.id}`);
+        store.dispatch(setSocket(socket.id));
     });
 
     socket.on("update-rooms", (rooms) => {
