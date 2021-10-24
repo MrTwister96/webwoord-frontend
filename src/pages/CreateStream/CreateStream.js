@@ -13,7 +13,7 @@ const classNames = (...classes) => {
 };
 
 // let audioInputs = [];
-const CreateStream = ({ setNewRoom, identity, setActiveRoom }) => {
+const CreateStream = ({ setNewRoom, socket, setActiveRoom }) => {
     let history = useHistory();
     const [kerkNaam, setKerkNaam] = useState("");
     const [prediker, setPrediker] = useState("");
@@ -46,7 +46,7 @@ const CreateStream = ({ setNewRoom, identity, setActiveRoom }) => {
             const newRoom = {
                 roomName: uuidv4(),
                 identity: kerkNaam,
-                roomHostSocketId: identity,
+                roomHostSocketId: socket,
                 isHost: true,
                 prediker: prediker,
                 beskrywing: beskrywing,
@@ -195,8 +195,7 @@ const CreateStream = ({ setNewRoom, identity, setActiveRoom }) => {
 
                     <div className="flex items-center justify-between mt-4">
                         <button
-                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                            type="button"
+                            className="btn-green"
                             onClick={handleCreateStream}
                         >
                             Start Stream
