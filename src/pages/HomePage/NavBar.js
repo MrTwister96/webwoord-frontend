@@ -9,12 +9,9 @@ const NavBar = () => {
     };
 
     return (
-        <div className="flex min-w-screen h-16 text-white items-center justify-end px-5">
-            <button
-                onClick={handleCreateStream}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            >
-                Create Stream
+        <div className="flex h-16 px-5 items-center justify-end ">
+            <button onClick={handleCreateStream} className="btn-green">
+                Create Room
             </button>
         </div>
     );

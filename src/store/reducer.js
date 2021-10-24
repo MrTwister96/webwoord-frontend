@@ -1,6 +1,7 @@
 import actions from "./actions";
 
 const initialState = {
+    socket: null,
     identity: null,
     leaveRoom: false,
     rooms: null,
@@ -22,6 +23,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actions.SET_SOCKET:
+            return {
+                ...state,
+                socket: action.socket,
+            };
         case actions.SET_IDENTITY:
             return {
                 ...state,

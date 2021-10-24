@@ -1,9 +1,17 @@
 const actions = {
+    SET_SOCKET: "SET_SOCKET",
     SET_IDENTITY: "SET_IDENTITY",
     SET_ROOMS: "SET_ROOMS",
     SET_NEW_ROOM: "SET_NEW_ROOM",
     SET_ACTIVE_ROOM: "SET_ACTIVE_ROOM",
     SET_LEAVE_ROOM: "SET_LEAVE_ROOM",
+};
+
+export const setSocket = (socket) => {
+    return {
+        type: actions.SET_SOCKET,
+        socket,
+    };
 };
 
 export const setRooms = (rooms) => {

@@ -4,30 +4,28 @@ import Room from "./Room";
 
 const Rooms = ({ rooms }) => {
     return (
-        <>
-            <div className="flex flex-1 flex-col items-center space-y-3 py-20  min-h-screen ">
-                {rooms.map((room, index) => {
-                    const {
-                        roomName,
-                        roomHost,
-                        prediker,
-                        beskrywing,
-                        listenerCount,
-                    } = room;
+        <div className="flex flex-col items-center space-y-3 py-20 ">
+            {rooms.map((room, index) => {
+                const {
+                    roomName,
+                    roomHost,
+                    prediker,
+                    beskrywing,
+                    listenerCount,
+                } = room;
 
-                    return (
-                        <Room
-                            key={`${index}`}
-                            roomName={roomName}
-                            roomHost={roomHost}
-                            prediker={prediker}
-                            beskrywing={beskrywing}
-                            listenerCount={listenerCount}
-                        />
-                    );
-                })}
-            </div>
-        </>
+                return (
+                    <Room
+                        key={`${index}`}
+                        roomName={roomName}
+                        roomHost={roomHost}
+                        prediker={prediker}
+                        beskrywing={beskrywing}
+                        listenerCount={listenerCount}
+                    />
+                );
+            })}
+        </div>
     );
 };
 
