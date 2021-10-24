@@ -180,6 +180,7 @@ const ToastAlert = ({ message, type }) => {
                 "border border-t-0 border-yellow-400 rounded-b bg-red-100 px-4 py-3 text-yellow-700"
             );
         }
+        // eslint-disable-next-line
     }, []);
 
     return (
